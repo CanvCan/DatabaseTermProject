@@ -1,0 +1,42 @@
+Bu ER Diyagramına Göre Gereken Veriler (Data Requirements);
+
+1	Kullanıcı Bilgileri
+	◦	Sisteme giriş yapacak her kullanıcı için bir email, şifre ve userID gerekiyor.
+	◦	Kullanıcılar birbirlerine mesaj gönderebiliyor. Mesajların içinde mesaj içeriği, mesaj ID’si, gönderenin kim olduğu (sender_id) ve alıcı (receiver_id) bilgileri olmalı.
+
+2	Müşteri (Customer)
+	◦	Müşteriler için kişisel bilgiler lazım: Ad, soyad, doğum tarihi, cinsiyet ve email gibi şeyler.
+	◦	Ayrıca müşterinin adres bilgileri de olmalı: Sokak adı, şehir, ülke ve posta kodu gibi detaylar.
+	◦	Müşteriler alışveriş yaparken kullandıkları ödeme yöntemini de seçmeli. Bunun için ödeme yöntemi, ödeme detayları ve yöntemin adı tutulmalı.
+
+3	Satıcı (Seller)
+	◦	Satıcılar için bir satıcı adı, açıklama ve satıcı türü gibi bilgiler gerekiyor.
+	◦	Satıcıların sattığı ürünler de bu bilgilerle ilişkilendirilecek.
+
+4	Ürünler (Products)
+	◦	Her ürün için bir kimlik numarası (productID) ve detayları (productDetails) tutulmalı.
+	◦	Ürünlerin hangi kategoriye ait olduğunu bilmek için kategori ID ve kategori adı gibi bilgiler lazım.
+	◦	Bir ürün birden fazla kategoriye ait olabilir, o yüzden bu ilişkiyi de takip etmeliyiz.
+
+5	Alışveriş Sepeti (Shopping Cart)
+	◦	Müşterilerin sepete ekledikleri ürünler için bir sepet ID (cartID) ve her ürünün miktarı (quantity) kaydedilmeli.
+
+6	İstek Listesi (Wishlist)
+	◦	Müşteriler beğendikleri ürünleri bir istek listesine ekleyebilir. Bunun için listeye bir kimlik numarası (listID), eklenen ürünlerin kimliği (productID) ve müşterinin 	kimliği (userID) kaydedilmeli.
+
+7	Siparişler (Orders)
+	◦	Her siparişin bir kimlik numarası (orderID) ve sipariş tarihi (orderDate) olmalı.
+	◦	Teslimat bilgileri de önemli: teslimat adresi, durum (status) ve teslimat tarihi gibi detaylar gerekiyor.
+
+8	İade İşlemleri (Refunds)
+	◦	Eğer bir sipariş iade edilirse, bunun için bir iade ID (refundID), iade tarihi (refundDate) ve iade durumu (status) tutulmalı. Ayrıca, iade nedenini açıklayan bir iade notu 	(refundCase) da olmalı.
+
+9	Değerlendirmeler (Reviews)
+	◦	Müşteriler ürünler hakkında yorum yapabilir. Bunun için bir yorum ID (reviewID), puanlama (rating), yorum metni (comment) ve yorum yapan müşterinin kimliği (customerID) 	saklanmalı.
+
+10	Hediye Kartları (Gift Cards)
+	◦	Hediye kartları için bir kimlik numarası (giftcardID), açıklama, indirim kodu (discount_code) ve stok miktarı (quantity) bilgisi gerekiyor.
+
+11	Mesaj Merkezi (Message Center)
+	◦	Kullanıcıların mesaj geçmişi için bir mesaj merkezi olmalı. Her mesajın kullanıcı ile ilişkisi kurulmalı ve mesajların içeriği detaylı olarak saklanmalı.
+

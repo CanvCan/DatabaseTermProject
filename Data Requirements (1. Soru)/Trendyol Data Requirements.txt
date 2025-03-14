@@ -1,0 +1,99 @@
+Trendyol Data Requirements
+
+User Management Requirements
+
+	1. System must support three types of users: 
+	o Customer
+	o Sellers
+	o Administrators
+
+	2. User Authentication & Profile 
+	o Each user must have a unique UserID
+	o Basic user information must be stored
+
+Customer Requirements
+
+	1. Customer Profile 
+	o Customers must be linked to a base user account
+	o Multiple addresses can be stored per customer
+	o Multiple payment methods can be associated with one customer
+
+	2. Shopping Experience 
+	o Customers can maintain a shopping cart
+	o Customers can save favorite products
+	o Customers can write product reviews
+
+	3. Order Management 
+	o Customers can place orders
+	o Order history must be maintained
+	o Refund requests can be submitted
+	o Refund history must be tracked
+
+Seller Requirements
+
+	1. Seller Profile 
+
+	o Sellers must be linked to a base user account
+	o Sellers can have multiple addresses
+	o Shipment information must be tracked
+
+	2. Product Management 
+	o Sellers can list products for sale
+	o Sellers can remove products from sale
+	o Sellers must maintain stock levels
+	o Sellers can set prices for products
+	o Sellers can create promotions for their products
+
+Product Requirements
+
+	1. Product Structure 
+	o Products must have base information
+	o Products can have multiple variations
+	o Each variation can have multiple options
+	o Products must belong to at least one category
+	o Products can be configured with specific options when added to cart
+
+	2. Product Categorization 
+	o Products must belong to categories
+	o Categories can have subcategories (parent-child relationship)
+	o Special categories can be created by administrators
+	o  roducts can belong to multiple categories
+
+	3. Inventory Management 
+	o Stock levels must be tracked per product item and seller
+	o Prices must be maintained per product item and seller
+
+Promotional Requirements
+
+	1. Promotions 
+	o  dministrators can create system-wide promotions
+	o Sellers can create seller-specific promotions
+	o Promotions can apply to specific products
+	o Promotions can apply to entire categories
+
+	2. Coupons 
+	o Administrators can create coupons
+	o Coupons can be applied to specific sellers
+	o Coupons can be applied to specific products
+
+Physical Location Requirements
+
+	1. Take on Spot Service 
+	o Physical locations must be tracked
+	o Products available at physical locations must be recorded
+	o Business hours for physical locations must be maintained
+
+Data Integrity Requirements
+
+	1. Historical Data 
+	o Order history must be preserved
+	o Refund history must be maintained
+	o Product configurations must be saved with orders
+
+Administrative Requirements
+
+	1. System Management 
+	o Administrators can manage promotions
+	o Administrators can manage coupons
+	o Administrators can create special categories
+
