@@ -1,0 +1,24 @@
+--Find All Products Purchased by a Specific Customer
+
+SELECT p.Name, p.BasePrice
+FROM Product p
+JOIN Product_Item pi ON p.ProductID = pi.ProductID
+WHERE pi.ProductItemID IN (
+    SELECT ProductItemID 
+    FROM PRODUCT_CONFIGURATION 
+    WHERE CartID IN (
+        SELECT CartID 
+        FROM Cart 
+        WHERE CustomerID = 3
+    )
+);
+
+
+-- Average Product Rating by Seller
+
+SELECT s.SellerID, AVG(p.Rating) AS AvgRating
+FROM SELL s
+JOIN Product_Item pi ON s.ProductItemID = pi.ProductItemID
+JOIN Product p ON pi.ProductID = p.ProductID
+GROUP BY s.SellerID;
+

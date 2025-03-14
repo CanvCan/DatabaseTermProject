@@ -1,0 +1,22 @@
+CREATE TRIGGER update_product_rating
+ON REVIEW
+AFTER INSERT
+AS
+BEGIN
+    UPDATE p
+    SET p.Rating = (
+        SELECT AVG(r.Rating * 1.0)
+		FROM REVIEW r
+		JOIN Product_Item pi ON r.ProductItemID = pi.ProductItemID
+		WHERE pi.ProductID = p.ProductID
+    )
+    FROM Product p
+    JOIN Product_Item pi ON p.ProductID = pi.ProductID
+    JOIN inserted i ON pi.ProductItemID = i.ProductItemID
+END;
+
+INSERT INTO Revıew
+VALUES (5, 'I do not like it', 1, '2024-01-19 00:00:00', 4, 3);
+
+INSERT INTO Revıew
+VALUES (6, 'Disappointment :(', 1, '2024-01-20 00:00:00', 2, 3);

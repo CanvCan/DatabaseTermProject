@@ -1,0 +1,195 @@
+#### **1. Entities and Attributes**
+
+Each entity represents a key concept in the system, with specific attributes needed to describe them. Below are the details:
+
+---
+
+**PERSONAL_INFO**
+- **Purpose:** To store the personal information of customers.
+- **Attributes:**
+  - **Email**: Unique email address of the person (used for communication and identification).
+  - **Name**: First name of the person.
+  - **Surname**: Last name of the person.
+  - **Gender**: Gender of the person.
+
+---
+
+**ADDRESS**
+- **Purpose:** To manage address details used for shipping, billing, or seller information.
+- **Attributes:**
+  - **Address_id**: Unique identifier for the address.
+  - **Address_name**: Label for the address (e.g., "Home," "Office").
+  - **City**: City name.
+  - **Street**: Street name or number.
+  - **Country**: Country name.
+  - **Postal_code**: ZIP or postal code.
+
+---
+
+**PAYMENT_METHOD**
+- **Purpose:** To store details about different payment methods used by customers.
+- **Attributes:**
+  - **PaymentMethod_id**: Unique identifier for the payment method.
+  - **Method_name**: Name of the payment method (e.g., "Credit Card," "PayPal").
+  - **Payment_Details**: Additional details such as card number or account info.
+
+---
+
+**CUSTOMER**
+- **Purpose:** Represents a customer who interacts with the system (can place orders, make reviews, etc.).
+- **Attributes:**
+  - **Customer_id**: Unique identifier for the customer.
+
+---
+
+**WISHLIST**
+- **Purpose:** To store information about customer wishlists.
+- **Attributes:**
+  - **List_id**: Unique identifier for the wishlist.
+  - **List_name**: Name of the wishlist (e.g., "Christmas Gifts").
+  - **Quantity**: Number of items in the wishlist.
+  - **Customer_id**: Foreign key linking the wishlist to the customer.
+
+---
+
+**ORDER**
+- **Purpose:** Represents an order placed by a customer.
+- **Attributes:**
+  - **Order_id**: Unique identifier for the order.
+  - **Order_Date**: Date the order was placed.
+  - **Total_amount**: Total amount of the order.
+  - **Terminal**: Terminal/device used to place the order.
+  - **Payment_Method**: Foreign key linking the order to a payment method.
+
+---
+
+**PRODUCT_REVIEW**
+- **Purpose:** To manage customer reviews for products.
+- **Attributes:**
+  - **Review_id**: Unique identifier for the review.
+  - **Review_msg**: Message written by the customer in the review.
+  - **Product_Rating**: Rating given to the product (e.g., 1-5 stars).
+  - **Product_id**: Foreign key linking the review to the product.
+  - **Customer_id**: Foreign key linking the review to the customer.
+
+---
+
+**REFUND_HISTORY**
+- **Purpose:** To track refunds related to orders.
+- **Attributes:**
+  - **Refund_id**: Unique identifier for the refund.
+  - **Refund_status**: Status of the refund (e.g., "Approved," "Pending").
+  - **Refund_date**: Date of the refund.
+  - **Order_id**: Foreign key linking the refund to the order.
+
+---
+
+**SHIPPING_INFO**
+- **Purpose:** To store shipping-related details for an order.
+- **Attributes:**
+  - **Shipping_date**: Date when the item was shipped.
+  - **Shipping_status**: Current shipping status (e.g., "In Transit," "Delivered").
+  - **Address_id**: Foreign key linking to the shipping address.
+  - **Tracking_id**: Tracking number for the shipment.
+
+---
+
+**USER**
+- **Purpose:** Represents users (customers or sellers) who log in to the system.
+- **Attributes:**
+  - **User_id**: Unique identifier for the user.
+  - **Username**: Username used to log in.
+  - **Email**: Email associated with the account.
+  - **Password**: Password for authentication.
+
+---
+
+**SELLER**
+- **Purpose:** To manage information about sellers.
+- **Attributes:**
+  - **Seller_id**: Unique identifier for the seller.
+  - **Name**: First name of the seller.
+  - **Surname**: Last name of the seller.
+  - **AverageSellerRating**: Average rating received by the seller.
+
+---
+
+**SELLER_INFO**
+- **Purpose:** Additional details about the seller’s business or operations.
+- **Attributes:**
+  - **Address_id**: Foreign key linking to the seller's address.
+
+---
+
+**COUPON**
+- **Purpose:** Represents coupons created by sellers to provide discounts.
+- **Attributes:**
+  - **Coupon_id**: Unique identifier for the coupon.
+  - **Discount_Amount**: Amount of discount offered.
+  - **Expiry_date**: Expiration date of the coupon.
+
+---
+
+**PRODUCT**
+- **Purpose:** To store details about products sold on the platform.
+- **Attributes:**
+  - **Product_id**: Unique identifier for the product.
+  - **Product_name**: Name of the product.
+  - **SKU**: Stock-keeping unit (used for inventory management).
+  - **Description**: Description of the product.
+  - **AverageProductRating**: Average rating received for the product.
+  - **Category_id**: Foreign key linking to the product category.
+
+---
+
+**CATEGORY**
+- **Purpose:** To categorize products into different groups.
+- **Attributes:**
+  - **Category_id**: Unique identifier for the category.
+  - **Category_name**: Name of the category (e.g., "Electronics," "Clothing").
+
+---
+
+**2. Relationships**
+
+Relationships define how entities interact with each other. The following are the key relationships:
+
+1. **PERSONAL_INFO and CUSTOMER**
+   - **Relationship**: One customer can have one personal info record (1:N).
+   - **Reason**: Personal information identifies the customer.
+
+2. **CUSTOMER and WISHLIST**
+   - **Relationship**: One customer can have multiple wishlists (1:N).
+
+3. **CUSTOMER and ORDER**
+   - **Relationship**: One customer can place multiple orders (1:N).
+
+4. **ORDER and PAYMENT_METHOD**
+   - **Relationship**: Each order uses one payment method (1:N).
+
+5. **ORDER and SHIPPING_INFO**
+   - **Relationship**: Each order has one shipping record (1:1).
+
+6. **ORDER and REFUND_HISTORY**
+   - **Relationship**: One order can have multiple refunds (1:N).
+
+7. **CUSTOMER and PRODUCT_REVIEW**
+   - **Relationship**: One customer can write multiple reviews (1:N).
+
+8. **PRODUCT_REVIEW and PRODUCT**
+   - **Relationship**: A product can have multiple reviews (N:M).
+
+9. **SELLER and SELLER_INFO**
+   - **Relationship**: One seller can have one seller info record (1:N).
+
+10. **SELLER and COUPON**
+    - **Relationship**: One seller can create multiple coupons (1:N).
+
+11. **PRODUCT and CATEGORY**
+    - **Relationship**: Each product belongs to one category (N:1).
+
+12. **USER and SELLER (via RATING)**
+    - **Relationship**: Users can rate sellers (M:N).
+
+---
+

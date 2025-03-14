@@ -1,0 +1,71 @@
+-- Find products with critically low stock
+
+SELECT p.ProductID, p.Name, s.Quantity AS Quantity
+FROM Product p
+JOIN Product_Item pi ON p.ProductID = pi.ProductID
+LEFT JOIN Stock s ON pi.ProductItemID = s.ProductItemID
+WHERE s.Quantity < 100
+GROUP BY p.ProductID, p.Name, s.Quantity;
+
+
+-- Analyze customer return patterns
+
+SELECT c.CustomerID, u.Name,
+       COUNT(r.RefundID) AS RefundCount,
+       SUM(r.RefundAmount) AS TotalRefunded
+FROM Customer c
+JOIN [User] u ON c.UserID = u.UserID
+JOIN Refund r ON c.CustomerID = r.CustomerID
+WHERE r.RefundDate >= DATEADD(DAY, -900, GETDATE()) -- "-30"
+GROUP BY c.CustomerID, u.Name
+HAVING COUNT(r.RefundID) > 0 -- "3"
+ORDER BY RefundCount DESC;
+
+
+-- Monitor promotion effectiveness
+
+SELECT p.PromotionID,
+       COUNT(DISTINCT o.OrderID) AS UsageCount,
+       SUM(o.TotalAmount) AS TotalRevenue
+FROM Promotıon p
+JOIN Promotıon_Product pp ON p.PromotionID = pp.PromotionID
+JOIN Product_Confıguratıon pc ON pp.ProductItemID = pc.ProductItemID
+JOIN Contaın c ON pc.ConfigurationID = c.ConfigurationID
+JOIN [Order] o ON c.OrderID = o.OrderID
+WHERE p.ExpiryDate > GETDATE()
+GROUP BY p.PromotionID
+ORDER BY UsageCount DESC;
+
+-- Calculate seller performance metrics
+
+SELECT s.SellerID, u.Name,
+       COUNT(DISTINCT o.OrderID) AS TotalOrders,
+       AVG(p.Rating) AS AvgRating,
+       SUM(o.TotalAmount) AS TotalRevenue
+FROM Seller s
+JOIN [User] u ON s.UserID = u.UserID
+JOIN Sell sell ON s.SellerID = sell.SellerID
+JOIN Product_Item pi ON sell.ProductItemID = pi.ProductItemID
+JOIN Product p ON pi.ProductID = p.ProductID
+JOIN Product_Confıguratıon pc ON pi.ProductItemID = pc.ProductItemID
+JOIN Contaın c ON pc.ConfigurationID = c.ConfigurationID
+JOIN [Order] o ON c.OrderID = o.OrderID
+WHERE o.OrderDate >= DATEADD(DAY, -900, GETDATE())  -- "-90"
+GROUP BY s.SellerID, u.Name;
+
+
+-- Find potentially fraudulent orders (multiple high-value orders from same customer in short time)
+
+SELECT 
+    c.CustomerID, 
+    u.Name, 
+    COUNT(o.OrderID) AS OrderCount, 
+    SUM(o.TotalAmount) AS TotalSpent
+FROM Customer c
+JOIN [User] u ON c.UserID = u.UserID
+JOIN [Order] o ON c.CustomerID = o.CustomerID
+WHERE o.OrderDate >= DATEADD(YEAR, -2, GETDATE()) -- "HOUR" AND "24"
+GROUP BY c.CustomerID, u.Name
+HAVING COUNT(o.OrderID) >= 1 AND SUM(o.TotalAmount) > 10  -- "3" AND "5000"
+ORDER BY TotalSpent DESC;
+

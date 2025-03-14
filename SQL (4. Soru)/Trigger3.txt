@@ -1,0 +1,18 @@
+CREATE TRIGGER update_order_status_when_delivered
+ON [ORDER]
+AFTER UPDATE
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM inserted i WHERE i.ShippingStatus = 'Delivered')
+    BEGIN
+        UPDATE o
+        SET o.OrderStatus = 'Completed'
+        FROM [Order] o
+        INNER JOIN inserted i ON o.OrderID = i.OrderID
+        WHERE i.ShippingStatus = 'Delivered';
+    END
+END;
+
+UPDATE [Order]
+SET ShippingStatus = 'Delivered'
+WHERE OrderID = 4;

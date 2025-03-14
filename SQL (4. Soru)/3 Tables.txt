@@ -1,0 +1,38 @@
+-- Find Top-Rated Products with Their Sellers
+
+SELECT p.Name, 
+       AVG(p.Rating) AS AvgRating, 
+       u.Name AS SellerName, 
+       COUNT(r.ReviewID) AS ReviewCount
+FROM Product p
+JOIN Product_Item pi ON p.ProductID = pi.ProductID
+JOIN SELL s ON pi.ProductItemID = s.ProductItemID
+JOIN Seller sr ON s.SellerID = sr.SellerID
+JOIN [User] u ON sr.UserID = u.UserID
+LEFT JOIN Revıew r ON pi.ProductItemID = r.ProductItemID
+GROUP BY p.ProductID, p.Name, u.Name
+HAVING AVG(p.Rating) >= 4.0;
+
+
+-- Get All Sellers with Their Ratings
+
+SELECT s.SellerID, u.Name AS SellerName, AVG(p.Rating) AS AvgRating
+FROM SELL s
+JOIN Seller sr ON s.SellerID = sr.SellerID
+JOIN [User] u ON sr.UserID = u.UserID
+JOIN Product_Item pi ON s.ProductItemID = pi.ProductItemID
+JOIN Product p ON pi.ProductID = p.ProductID
+GROUP BY s.SellerID, u.Name;
+
+
+-- Get all promotions and their affected products
+
+SELECT pr.PromotionID, 
+       pr.DiscountAmount, 
+       p.Name, 
+       p.BasePrice
+FROM Promotıon pr
+JOIN Promotıon_Product pp ON pr.PromotionID = pp.PromotionID
+JOIN Product_Item pi ON pp.ProductItemID = pi.ProductItemID
+JOIN Product p ON pi.ProductID = p.ProductID
+WHERE pr.ExpiryDate > GETDATE();

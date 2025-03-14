@@ -1,0 +1,21 @@
+CREATE TRIGGER update_stock_quantity
+ON CONTAIN
+AFTER INSERT
+AS
+BEGIN
+	UPDATE s
+	SET s.Quantity = s.Quantity - c.Quantity
+	FROM Stock s
+	JOIN Product_Confıguratıon pc ON s.ProductItemID = pc.ProductItemID
+	JOIN inserted i ON pc.ConfigurationID = i.ConfigurationID
+	JOIN Cart c ON c.CartID = pc.CartID;
+END;
+
+INSERT INTO PRODUCT_CONFIGURATION
+VALUES (4, '2024-01-18 00:00:00.000', NULL, 3, 3, 1);
+
+INSERT INTO [Order]
+VALUES (4, '2024-01-18 00:00:00.000', 'Processing', 29.99, NULL, 'Processing', 4, 4);
+
+INSERT INTO CONTAIN
+VALUES (4, 4);

@@ -1,0 +1,418 @@
+CREATE DATABASE ecommerce;
+USE ecommerce;
+
+-- User table
+CREATE TABLE [USER] (
+    UserID INT PRIMARY KEY,
+    RegistrationDate DATE NOT NULL,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    PhoneNumber VARCHAR(20)
+);
+
+-- Customer table
+CREATE TABLE CUSTOMER (
+    CustomerID INT PRIMARY KEY,
+    UserID INT,
+    FOREIGN KEY (UserID) REFERENCES [USER](UserID)
+);
+
+-- Refund table
+CREATE TABLE REFUND (
+    RefundID INT PRIMARY KEY,
+    RefundAmount DECIMAL(10,2) NOT NULL,
+    RequestDate DATETIME  DEFAULT CURRENT_TIMESTAMP,
+	RefundDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID)
+);
+
+-- Refund History table
+CREATE TABLE REFUND_HISTORY (
+    RefundID INT,
+	UpdateDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+	Status VARCHAR(50),
+    FOREIGN KEY (RefundID) REFERENCES REFUND(RefundID)
+);
+
+-- Address Customer table
+CREATE TABLE ADDRESS_CUSTOMER (
+    AddressID INT PRIMARY KEY,
+    Country VARCHAR(100) NOT NULL,
+    State VARCHAR(100),
+    City VARCHAR(100) NOT NULL,
+    Street VARCHAR(255) NOT NULL,
+    PostalCode VARCHAR(20),
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID)
+);
+
+-- Payment Method table
+CREATE TABLE PAYMENT_METHOD (
+    PaymentMethodID INT PRIMARY KEY,
+    MethodName VARCHAR(50) NOT NULL,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID)
+);
+
+-- Payment Details table
+CREATE TABLE DETAILS (
+    PaymentMethodID INT,
+    Provider VARCHAR(100),
+    CardNo VARCHAR(16),
+    CVV VARCHAR(3),
+    ValidThru DATE,
+    InstalmentOption INT,
+    FOREIGN KEY (PaymentMethodID) REFERENCES PAYMENT_METHOD(PaymentMethodID)
+);
+
+-- Seller table
+CREATE TABLE SELLER (
+    SellerID INT PRIMARY KEY,
+    UserID INT,
+    FOREIGN KEY (UserID) REFERENCES [USER](UserID)
+);
+
+-- Message table
+CREATE TABLE MESSAGE (
+    MessageID INT PRIMARY KEY,
+    MessageText TEXT NOT NULL,
+    CustomerID INT,
+    SellerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID),
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID)
+);
+
+-- Product table
+CREATE TABLE PRODUCT (
+    ProductID INT PRIMARY KEY,
+    Description TEXT,
+    Name VARCHAR(200) NOT NULL,
+    Rating DECIMAL(3,2),
+    UpdatedAt DATETIME,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    BasePrice DECIMAL(10,2) NOT NULL,
+    VariationID INT
+);
+
+-- Variation table
+CREATE TABLE VARIATION (
+    VariationID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Description TEXT
+);
+
+ALTER TABLE PRODUCT 
+ADD FOREIGN KEY (VariationID) REFERENCES VARIATION(VariationID);
+
+-- Product Item table
+CREATE TABLE PRODUCT_ITEM (
+    ProductItemID INT PRIMARY KEY,
+    SKU VARCHAR(50) UNIQUE NOT NULL,
+    ProductID INT,
+    FOREIGN KEY (ProductID) REFERENCES PRODUCT(ProductID)
+);
+
+-- Review table
+CREATE TABLE REVIEW (
+    ReviewID INT PRIMARY KEY,
+    ReviewText TEXT,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    ReviewDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CustomerID INT,
+    ProductItemID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID)
+);
+
+ALTER TABLE PRODUCT_ITEM
+ADD ReviewID INT;
+
+ALTER TABLE PRODUCT_ITEM
+ADD FOREIGN KEY (ReviewID) REFERENCES REVIEW(ReviewID);
+
+-- Favorites table
+CREATE TABLE FAVORITES (
+    FavoriteID INT PRIMARY KEY,
+    AddedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CustomerID INT,
+    ProductItemID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID),
+    FOREIGN KEY (ProductItemID) REFERENCES Product_Item(ProductItemID)
+);
+
+-- Cart table
+CREATE TABLE CART (
+    CartID INT PRIMARY KEY,
+    AddedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Quantity INT NOT NULL,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID)
+);
+
+-- Order table
+CREATE TABLE [ORDER] (
+    OrderID INT PRIMARY KEY,
+    OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    OrderStatus VARCHAR(50) NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    DeliveryDate DATE,
+    ShippingStatus VARCHAR(50),
+    CustomerID INT,
+    PaymentMethodID INT,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID),
+    FOREIGN KEY (PaymentMethodID) REFERENCES PAYMENT_METHOD(PaymentMethodID)
+);
+
+-- Order History table
+CREATE TABLE ORDER_HISTORY (
+    OrderID INT,
+    UpdateDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (OrderID) REFERENCES [ORDER](OrderID)
+);
+
+-- Admin table
+CREATE TABLE ADMIN (
+    AdminID INT PRIMARY KEY,
+    UserID INT,
+    FOREIGN KEY (UserID) REFERENCES [USER](UserID)
+);
+
+-- Product Category table
+CREATE TABLE PRODUCT_CATEGORY (
+    CategoryID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Description TEXT,
+    ParentCategoryID INT,
+    ProductID INT,
+    FOREIGN KEY (ParentCategoryID) REFERENCES PRODUCT_CATEGORY(CategoryID),
+    FOREIGN KEY (ProductID) REFERENCES PRODUCT(ProductID)
+);
+
+-- Special Category table
+CREATE TABLE SPECIAL_CATEGORY (
+    SpecialCategoryID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    AdminID INT,
+    CategoryID INT,
+    FOREIGN KEY (AdminID) REFERENCES ADMIN(AdminID),
+    FOREIGN KEY (CategoryID) REFERENCES PRODUCT_CATEGORY(CategoryID)
+);
+
+-- Shipment table
+CREATE TABLE SHIPMENT (
+    ShipmentID INT PRIMARY KEY,
+    DeliveryCompanyName VARCHAR(100) NOT NULL,
+    SellerID INT,
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID)
+);
+
+-- Take On Spot table
+CREATE TABLE TAKE_ON_SPOT (
+    SpotID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Address TEXT NOT NULL,
+    AdminID INT,
+    FOREIGN KEY (AdminID) REFERENCES ADMIN(AdminID)
+);
+
+-- Variation Option table
+CREATE TABLE VARIATION_OPTION (
+    OptionID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    AdditionalPrice DECIMAL(10,2),
+    VariationID INT,
+    FOREIGN KEY (VariationID) REFERENCES VARIATION(VariationID)
+);
+
+-- Product Configuration table
+CREATE TABLE PRODUCT_CONFIGURATION (
+    ConfigurationID INT PRIMARY KEY,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CartID INT,
+    ProductItemID INT,
+    OptionID INT,
+    FOREIGN KEY (CartID) REFERENCES CART(CartID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    FOREIGN KEY (OptionID) REFERENCES VARIATION_OPTION(OptionID)
+);
+
+-- Stock table
+CREATE TABLE STOCK (
+    ProductItemID INT,
+    SellerID INT,
+    Quantity INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID),
+    PRIMARY KEY (ProductItemID, SellerID)
+);
+
+-- Price table
+CREATE TABLE PRICE (
+    ProductItemID INT,
+    SellerID INT,
+    Price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID),
+    PRIMARY KEY (ProductItemID, SellerID)
+);
+
+-- Address Seller table
+CREATE TABLE ADDRESS_SELLER (
+    AddressID INT PRIMARY KEY,
+    Country VARCHAR(100) NOT NULL,
+    State VARCHAR(100),
+    City VARCHAR(100) NOT NULL,
+    Street VARCHAR(255) NOT NULL,
+    PostalCode VARCHAR(20),
+    SellerID INT,
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID)
+);
+
+-- Business Hours table
+CREATE TABLE BUSINESS_HOURS (
+    BusinessHoursID INT PRIMARY KEY,
+    Day VARCHAR(10) NOT NULL,
+    OpeningHours TIME NOT NULL,
+    ClosingHours TIME NOT NULL
+);
+
+-- Promotion By Seller table
+CREATE TABLE PROMOTION_BY_SELLER (
+    PromotionByID INT PRIMARY KEY,
+    DiscountAmount DECIMAL(10,2) NOT NULL,
+    ExpiryDate DATE NOT NULL,
+    SellerID INT,
+    ProductItemID INT,
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID)
+);
+
+-- Promotion table
+CREATE TABLE PROMOTION (
+    PromotionID INT PRIMARY KEY,
+    DiscountAmount DECIMAL(10,2) NOT NULL,
+    ExpiryDate DATE NOT NULL,
+    AdminID INT,
+    FOREIGN KEY (AdminID) REFERENCES ADMIN(AdminID)
+);
+
+-- Promotion Product table
+CREATE TABLE PROMOTION_PRODUCT (
+    PromotionID INT,
+    ProductItemID INT,
+    FOREIGN KEY (PromotionID) REFERENCES PROMOTION(PromotionID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    PRIMARY KEY (PromotionID, ProductItemID)
+);
+
+-- Promotion Category table
+CREATE TABLE PROMOTION_CATEGORY (
+    PromotionID INT,
+    CategoryID INT,
+    FOREIGN KEY (PromotionID) REFERENCES PROMOTION(PromotionID),
+    FOREIGN KEY (CategoryID) REFERENCES PRODUCT_CATEGORY(CategoryID),
+    PRIMARY KEY (PromotionID, CategoryID)
+);
+
+-- Coupon table
+CREATE TABLE COUPON (
+    CouponID INT PRIMARY KEY,
+    DiscountAmount DECIMAL(10,2) NOT NULL,
+    ExpiryDate DATE NOT NULL,
+    AdminID INT,
+    FOREIGN KEY (AdminID) REFERENCES ADMIN(AdminID)
+);
+
+-- Coupon Seller table
+CREATE TABLE COUPON_SELLER (
+    CouponID INT,
+    SellerID INT,
+    FOREIGN KEY (CouponID) REFERENCES COUPON(CouponID),
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID),
+    PRIMARY KEY (CouponID, SellerID)
+);
+
+-- Coupon Product table
+CREATE TABLE COUPON_PRODUCT (
+    CouponID INT,
+    ProductItemID INT,
+    FOREIGN KEY (CouponID) REFERENCES COUPON(CouponID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    PRIMARY KEY (CouponID, ProductItemID)
+);
+
+-- Remove From Sale table
+CREATE TABLE REMOVE_FROM_SALE (
+    SellerID INT,
+    ProductItemID INT,
+    RemovalDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    PRIMARY KEY (SellerID, ProductItemID)
+);
+
+-- Sell table
+CREATE TABLE SELL (
+    SellerID INT,
+    ProductItemID INT,
+    FOREIGN KEY (SellerID) REFERENCES SELLER(SellerID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    PRIMARY KEY (SellerID, ProductItemID)
+);
+
+-- Get Info table
+CREATE TABLE GET_INFO (
+    RefundID INT,
+    OrderID INT,
+    FOREIGN KEY (RefundID) REFERENCES REFUND(RefundID),
+    FOREIGN KEY (OrderID) REFERENCES [ORDER](OrderID),
+    PRIMARY KEY (RefundID, OrderID)
+);
+
+-- Contain table
+CREATE TABLE CONTAIN (
+    OrderID INT,
+    ConfigurationID INT,
+    FOREIGN KEY (OrderID) REFERENCES [ORDER](OrderID),
+    FOREIGN KEY (ConfigurationID) REFERENCES PRODUCT_CONFIGURATION(ConfigurationID),
+    PRIMARY KEY (OrderID, ConfigurationID)
+);
+
+-- Consist Of table
+CREATE TABLE CONSIST_OF (
+    SpecialCategoryID INT,
+    ProductID INT,
+    FOREIGN KEY (SpecialCategoryID) REFERENCES SPECIAL_CATEGORY(SpecialCategoryID),
+    FOREIGN KEY (ProductID) REFERENCES PRODUCT(ProductID),
+    PRIMARY KEY (SpecialCategoryID, ProductID)
+);
+
+-- Serve table
+CREATE TABLE SERVE (
+    SpotID INT,
+    ProductItemID INT,
+    FOREIGN KEY (SpotID) REFERENCES TAKE_ON_SPOT(SpotID),
+    FOREIGN KEY (ProductItemID) REFERENCES PRODUCT_ITEM(ProductItemID),
+    PRIMARY KEY (SpotID, ProductItemID)
+);
+
+-- Work While table
+CREATE TABLE WORK_WHILE (
+    SpotID INT,
+    BusinessHoursID INT,
+    FOREIGN KEY (SpotID) REFERENCES TAKE_ON_SPOT(SpotID),
+    FOREIGN KEY (BusinessHoursID) REFERENCES BUSINESS_HOURS(BusinessHoursID),
+    PRIMARY KEY (SpotID, BusinessHoursID)
+);
+
+-- Shipment Info table
+CREATE TABLE SHIPMENT_INFO (
+    ShipmentInfoID INT PRIMARY KEY,
+    OrderID INT,
+    ShippingStatus VARCHAR(50) NOT NULL,
+    ShippingDate DATE,
+    BillingInfo VARCHAR(100) UNIQUE NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES [ORDER](OrderID)
+);

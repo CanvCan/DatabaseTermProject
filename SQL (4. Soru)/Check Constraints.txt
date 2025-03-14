@@ -1,0 +1,12 @@
+-- 4. Check Constraints
+ALTER TABLE Product
+ADD CONSTRAINT chk_base_price 
+CHECK (BasePrice > 0);
+
+ALTER TABLE Revıew
+ADD CONSTRAINT chk_rating 
+CHECK (Rating BETWEEN 1 AND 5);
+
+ALTER TABLE [Order]
+ADD CONSTRAINT chk_delivery_date 
+CHECK (DeliveryDate >= OrderDate);

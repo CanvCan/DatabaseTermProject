@@ -1,0 +1,298 @@
+-- User sample data
+INSERT INTO [USER] VALUES
+(1, '2024-01-01', 'John Doe', 'john@email.com', 'hash123', '+1234567890'),
+(2, '2024-01-02', 'Jane Smith', 'jane@email.com', 'hash456', '+1234567891'),
+(3, '2024-01-03', 'Bob Seller', 'bob@email.com', 'hash789', '+1234567892'),
+(4, '2024-01-04', 'Admin User', 'admin@email.com', 'hashadmin', '+1234567893'),
+(5, '2024-01-05', 'Sarah Seller', 'sarah@email.com', 'hash101', '+1234567894'),
+(6, '2024-01-06', 'Mike Customer', 'mike@email.com', 'hash102', '+1234567895'),
+(7, '2024-01-07', 'Lisa Customer', 'lisa@email.com', 'hash103', '+1234567896');
+
+-- Customer sample data
+INSERT INTO CUSTOMER VALUES
+(1, 1),
+(2, 2),
+(3, 6),
+(4, 7);
+
+-- Seller sample data
+INSERT INTO SELLER VALUES
+(1, 3),
+(2, 5);
+
+-- Admin sample data
+INSERT INTO ADMIN VALUES
+(1, 4);
+
+-- Refund sample data
+INSERT INTO REFUND VALUES
+(1, 150.00, '2024-01-10', '2024-01-15', 1),
+(2, 75.50, '2024-01-11', '2024-01-15', 2),
+(3, 0.0, '2024-01-12', '2024-01-14', 3);
+
+-- Refund History sample data
+INSERT INTO REFUND_HISTORY VALUES
+(1, '2024-01-10 10:00:00', 'Initiated'),
+(1, '2024-01-15 14:00:00', 'Approved'),
+
+(2, '2024-01-11 09:00:00', 'Initiated'),
+(2, '2024-01-12 11:00:00', 'Pending'),
+(2, '2024-01-15 15:00:00', 'Approved'),
+
+(3, '2024-01-12 10:00:00', 'Initiated'),
+(3, '2024-01-14 14:00:00', 'Denied');
+
+-- Address Customer sample data
+INSERT INTO ADDRESS_CUSTOMER VALUES
+(1, 'USA', 'NY', 'New York', '123 Main St', '10001', 1),
+(2, 'USA', 'CA', 'Los Angeles', '456 Oak Ave', '90001', 2),
+(3, 'USA', 'TX', 'Houston', '789 Pine St', '77001', 3),
+(4, 'USA', 'FL', 'Miami', '321 Beach Rd', '33101', 4);
+
+-- Payment Method sample data
+INSERT INTO PAYMENT_METHOD VALUES
+(1, 'Credit Card', 1),
+(2, 'PayPal', 2),
+(3, 'Credit Card', 3),
+(4, 'Debit Card', 4);
+
+-- Payment Details sample data
+INSERT INTO DETAILS VALUES
+(1, 'Visa', '4111111111111111', '123', '2025-12-31', 0),
+(2, 'PayPal', NULL, NULL, NULL, NULL),
+(3, 'MasterCard', '5111111111111111', '456', '2026-06-30', 3),
+(4, 'Visa', '4222222222222222', '789', '2025-09-30', 0);
+
+-- Message sample data
+INSERT INTO MESSAGE VALUES
+(1, 'When will my order arrive?', 1, 1),
+(2, 'Your order will be delivered tomorrow.', 1, 1),
+(3, 'Is this product available in red?', 2, 2),
+(4, 'Yes, we have it in red color.', 2, 2);
+
+-- Variation sample data
+INSERT INTO VARIATION VALUES
+(1, 'Size', 'Product size variations'),
+(2, 'Color', 'Color variations'),
+(3, 'Material', 'Material types'),
+(4, 'Storage', 'Storage capacity');
+
+-- Variation Option sample data
+INSERT INTO VARIATION_OPTION VALUES
+(1, 'Small', 0.00, 1),
+(2, 'Medium', 5.00, 1),
+(3, 'Large', 10.00, 1),
+(4, 'Red', 0.00, 2),
+(5, 'Blue', 0.00, 2),
+(6, 'Black', 0.00, 2),
+(7, '128GB', 0.00, 4),
+(8, '256GB', 100.00, 4);
+
+-- Product sample data
+INSERT INTO PRODUCT VALUES
+(1, 'High-quality laptop', 'Premium Laptop', NULL, GETDATE(), GETDATE(), 999.99, 4),
+(2, 'Smartphone', 'Smart Phone X', NULL, GETDATE(), GETDATE(), 599.99, 4),
+(3, 'T-Shirt', 'Cotton T-Shirt', NULL, GETDATE(), GETDATE(), 29.99, 1),
+(4, 'Jeans', 'Classic Jeans', NULL, GETDATE(), GETDATE(), 79.99, 1);
+
+-- Product Item sample data
+INSERT INTO PRODUCT_ITEM VALUES
+(1, 'LAP001', 1, NULL),
+(2, 'PHO001', 2, NULL),
+(3, 'TSH001', 3, NULL),
+(4, 'JNS001', 4, NULL);
+
+-- Review sample data
+INSERT INTO REVIEW VALUES
+(1, 'Great product!', 5, '2024-01-15', 1, 1),
+(2, 'Good value for money', 4, '2024-01-16', 2, 2),
+(3, 'Nice quality', 4, '2024-01-17', 3, 3),
+(4, 'Perfect fit', 5, '2024-01-18', 4, 4);
+
+-- Update Product Item with ReviewID
+UPDATE PRODUCT_ITEM SET ReviewID = 1 WHERE ProductItemID = 1;
+UPDATE PRODUCT_ITEM SET ReviewID = 2 WHERE ProductItemID = 2;
+UPDATE PRODUCT_ITEM SET ReviewID = 3 WHERE ProductItemID = 3;
+UPDATE PRODUCT_ITEM SET ReviewID = 4 WHERE ProductItemID = 4;
+
+-- Product Category sample data
+INSERT INTO PRODUCT_CATEGORY VALUES
+(1, 'Electronics', 'Electronic devices and accessories', NULL, 1),
+(2, 'Clothing', 'Fashion and apparel', NULL, 3),
+(3, 'Smartphones', 'Mobile phones and accessories', 1, 2),
+(4, 'Laptops', 'Notebook computers', 1, 1);
+
+-- Special Category sample data
+INSERT INTO SPECIAL_CATEGORY VALUES
+(1, 'Flash Sale', 1, 1),
+(2, 'Clearance', 1, 2),
+(3, 'New Arrivals', 1, 3);
+
+-- Stock sample data
+INSERT INTO STOCK VALUES
+(1, 1, 10),
+(2, 1, 15),
+(3, 2, 100),
+(4, 2, 50);
+
+-- Price sample data
+INSERT INTO PRICE VALUES
+(1, 1, 999.99),
+(2, 1, 599.99),
+(3, 2, 29.99),
+(4, 2, 79.99);
+
+-- Address Seller sample data
+INSERT INTO ADDRESS_SELLER VALUES
+(1, 'USA', 'NY', 'Brooklyn', '789 Seller St', '10002', 1),
+(2, 'USA', 'CA', 'San Francisco', '456 Market St', '94105', 2);
+
+-- Business Hours sample data
+INSERT INTO BUSINESS_HOURS VALUES
+(1, 'Monday', '09:00:00', '18:00:00'),
+(2, 'Tuesday', '09:00:00', '18:00:00'),
+(3, 'Wednesday', '09:00:00', '18:00:00'),
+(4, 'Thursday', '09:00:00', '18:00:00'),
+(5, 'Friday', '09:00:00', '20:00:00'),
+(6, 'Saturday', '10:00:00', '16:00:00'),
+(7, 'Sunday', '10:00:00', '16:00:00');
+
+-- Take On Spot sample data
+INSERT INTO TAKE_ON_SPOT VALUES
+(1, 'Downtown Store', '123 Main St, New York', 1),
+(2, 'Mall Location', '456 Mall Ave, Los Angeles', 1);
+
+-- Cart sample data
+INSERT INTO CART VALUES
+(1, '2024-01-15', 1, 1),
+(2, '2024-01-16', 2, 2),
+(3, '2024-01-17', 1, 3);
+
+-- Favorites sample data
+INSERT INTO FAVORITES VALUES
+(1, '2024-01-15', 1, 1),
+(2, '2024-01-16', 2, 2),
+(3, '2024-01-17', 3, 3);
+
+-- Product Configuration sample data
+INSERT INTO PRODUCT_CONFIGURATION VALUES
+(1, '2024-01-15', 1, 1, 7),
+(2, '2024-01-16', 2, 2, 8),
+(3, '2024-01-17', 3, 3, 1);
+
+-- Order sample data
+INSERT INTO [ORDER] VALUES
+(1, '2024-01-15', 'Completed', 999.99, '2024-01-20', 'Delivered', 1, 1),
+(2, '2024-01-16', 'Processing', 599.99, '2024-01-21', 'Shipped', 2, 2),
+(3, '2024-01-17', 'Pending', 29.99, NULL, 'Processing', 3, 3);
+
+-- Order History sample data
+INSERT INTO ORDER_HISTORY VALUES
+(1, '2024-01-15 10:00:00'),
+(1, '2024-01-17 14:00:00'),
+(1, '2024-01-20 15:00:00'),
+(2, '2024-01-16 11:00:00'),
+(2, '2024-01-16 14:00:00'),
+(3, '2024-01-17 00:00:00');
+
+-- Shipment sample data
+INSERT INTO SHIPMENT VALUES
+(1, 'FedEx', 1),
+(2, 'UPS', 2),
+(3, 'DHL', 1);
+
+-- Promotion sample data
+INSERT INTO PROMOTION VALUES
+(1, 15.00, '2025-12-31', 1),
+(2, 25.00, '2025-06-30', 1),
+(3, 10.00, '2025-09-30', 1);
+
+-- Promotion Product sample data
+INSERT INTO PROMOTION_PRODUCT VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Promotion Category sample data
+INSERT INTO PROMOTION_CATEGORY VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Promotion By Seller sample data
+INSERT INTO PROMOTION_BY_SELLER VALUES
+(1, 10.00, '2024-03-31', 1, 1),
+(2, 15.00, '2024-04-30', 2, 2);
+
+-- Coupon sample data
+INSERT INTO COUPON VALUES
+(1, 10.00, '2025-12-31', 1),
+(2, 20.00, '2025-06-30', 1),
+(3, 15.00, '2025-09-30', 1);
+
+-- Coupon Seller sample data
+INSERT INTO COUPON_SELLER VALUES
+(1, 1),
+(2, 2),
+(3, 1);
+
+-- Coupon Product sample data
+INSERT INTO COUPON_PRODUCT VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Remove From Sale sample data
+INSERT INTO REMOVE_FROM_SALE VALUES
+(1, 4, '2024-01-15'),
+(2, 3, '2024-01-16');
+
+-- Sell sample data
+INSERT INTO SELL VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(2, 4);
+
+-- Get Info sample data
+INSERT INTO GET_INFO VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Contain sample data
+INSERT INTO CONTAIN VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Consist Of sample data
+INSERT INTO CONSIST_OF VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+-- Serve sample data
+INSERT INTO SERVE VALUES
+(1, 1),
+(1, 2),
+(2, 3);
+
+-- Work While sample data
+INSERT INTO WORK_WHILE VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 5);
+
+-- Shipment Info sample data
+INSERT INTO SHIPMENT_INFO VALUES
+(1, 1, 'Delivered', '2024-01-20', 'BILL-001'),
+(2, 2, 'Shipped', '2024-01-21', 'BILL-002'),
+(3, 3, 'Processing', NULL, 'BILL-003');

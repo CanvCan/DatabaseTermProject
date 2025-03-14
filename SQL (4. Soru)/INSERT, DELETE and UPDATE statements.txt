@@ -1,0 +1,14 @@
+-- Insert new product
+INSERT INTO Product (ProductID, Description, Name, Rating, UpdatedAt, CreatedAt, BasePrice, VariationID)
+VALUES (5, 'New Product', 'Description', NULL, '2025-01-15 00:00:00', '2025-01-15 05:33:00', 299.99, 1);
+
+-- Update product price
+UPDATE Product
+SET BasePrice = BasePrice * 1.1
+WHERE ProductID = 5;
+
+-- Delete unused payment method
+DELETE FROM PaymentMethod
+WHERE PaymentMethodID NOT IN (
+    SELECT DISTINCT PaymentMethodID FROM [Order]
+);
